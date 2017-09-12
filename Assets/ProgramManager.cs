@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public enum SceneName { MAIN = 0, TOWN ,STAGE , GAME, EXIT }
+public enum SceneName { MAIN = 0, TOWN ,STAGE , GAME, STORY, EXIT }
 
 /// <summary>
 ///  Program Manager Class

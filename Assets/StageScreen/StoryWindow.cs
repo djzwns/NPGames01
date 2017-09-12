@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using Redemption.Story;
 
 /// <summary>
 /// Story Mode를 선택시 표시하기 위한 Window UI Class
@@ -18,9 +19,13 @@ public class StoryWindow : BaseWindow
     [SerializeField]
     private ReadyWindow m_ReadyW;
 
+    [SerializeField]
+    private Button m_start;
+
     public override void Init()
     {
         m_Esc.onClick.AddListener(Exit);
+        m_start.onClick.AddListener(StoryStart);
     }
     public override void Enter()
     {
@@ -32,5 +37,11 @@ public class StoryWindow : BaseWindow
     public override void Exit()
     {
         this.gameObject.SetActive(false);
+    }
+
+    private void StoryStart()
+    {
+        ConversationManager.Instance.LoadStory("test");
+        ProgramManager.Insatnce.Change_Scene(SceneName.STORY);
     }
 }
