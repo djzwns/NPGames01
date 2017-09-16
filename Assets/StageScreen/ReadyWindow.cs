@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using Redemption.Story;
 
 /// <summary>
 /// Ready Window -> 스테이지를 선택한 후 퀵파티를 조정하고 Stage의 정보를 간략하게 보여주는 Window Class
@@ -45,6 +46,9 @@ public class ReadyWindow : BaseWindow
     /// 선택된 Stage의 Data를 load하여 정보를 출력하기위한 변수
     /// </summary>
     private StageData m_CrtData;
+
+    [SerializeField]
+    private GameObject m_attachWindow;
     
     public override void Init()
     {
@@ -113,6 +117,23 @@ public class ReadyWindow : BaseWindow
     {
         MonsterManager.Instance.Set_StageData(m_CrtData);
         Debug.Log(m_CrtData.m_Wave.Length);
-        ProgramManager.Insatnce.Change_Scene(SceneName.GAME);
+        string window = m_attachWindow.name;
+        switch (window)
+        {
+            case "Stage_Window":
+                ProgramManager.Insatnce.Change_Scene(SceneName.GAME);
+                break;
+            case "Story_Window":
+                ConversationManager.Instance.LoadStory("test");
+                ProgramManager.Insatnce.Change_Scene(SceneName.STORY);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void SetWindow(GameObject _window)
+    {
+        m_attachWindow = _window;
     }
 }

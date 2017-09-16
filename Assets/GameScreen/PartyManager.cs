@@ -106,6 +106,7 @@ public class PartyManager : BaseObjManager
                 m_Heros[i].Set_Hero_Stat(DataTable.Instance.Get_Hero_Data(PlayerData.Instance.Get_Party_Hero(i)));
                 m_ActiveHeros.Add(m_Heros[i]);
             }
+            m_Heros[i].Init();
         }
 
         // 활성화된 Hero에게 Base Pos를 전달하는 곳
@@ -142,7 +143,7 @@ public class PartyManager : BaseObjManager
             Debug.Log("Dead");
             is_Dead = true;
         }
-        m_CurrentHero = null;
+        //m_CurrentHero = null;
     }
     public override void Exit()
     {
@@ -168,7 +169,7 @@ public class PartyManager : BaseObjManager
                 Ray2D ray = new Ray2D(wp, Vector2.zero);
                 // Ray를 쏜것을 기반으로 Hit된 Obj가 있는지 체크하기 위한 변수
                 RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
-
+                
                 // Hit된 Obj가 Hero 일 때
                 if (hit.transform != null && hit.transform.tag.Equals("Hero"))
                 {
@@ -194,6 +195,8 @@ public class PartyManager : BaseObjManager
                         m_CurrentHero.Set_Point(wp);
                     }
                     else m_CurrentHero.Set_Point(wp);
+
+                    m_CurrentHero = null;
                 }
             }
         }

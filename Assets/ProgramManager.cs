@@ -59,7 +59,7 @@ public class ProgramManager : MonoBehaviour
     public void Change_Scene(SceneName _temp)
     {
         if (m_CurrentScene == null) return;
-
+        
         m_CurrentScene.gameObject.SetActive(false);
         m_CurrentScene.Exit();
         m_CurrentScene = m_SceneList[(int)_temp];

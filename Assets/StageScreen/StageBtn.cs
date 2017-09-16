@@ -58,6 +58,7 @@ public class StageBtn : Button
     private void onClick_Btn()
     {
         m_Ready.Set_StageData(StageDataManager.Instance.Get_Stage_Data("Story0101"));
+        m_Ready.SetWindow(this.transform.parent.gameObject);
         m_Ready.Enter();
     }
     /// <summary>

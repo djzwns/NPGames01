@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
 namespace Redemption.Story
 {
@@ -31,6 +32,9 @@ namespace Redemption.Story
         [SerializeField]
         private ConversationScriptable m_story;
 
+        [SerializeField]
+        private PlayableDirector m_storyDirector;
+
         private int m_currentConversation;
         private int m_lastConversation;
         #endregion // 스토리 관련 속성
@@ -42,6 +46,7 @@ namespace Redemption.Story
         public void LoadStory(string _name)
         {
             string path = "Story/";
+            m_storyDirector.playableAsset = Resources.Load(path + _name) as PlayableAsset;
 
             switch (Application.systemLanguage)
             {
@@ -77,7 +82,7 @@ namespace Redemption.Story
 
         public override void Exit()
         {
-
+            StartCoroutine(GotoStage());
         }
 
         public void NextConversation()
@@ -87,7 +92,14 @@ namespace Redemption.Story
 
         public Conversation GetCurrentConversation()
         {
-            return m_story.GetConversation(m_currentConversation);
+            return m_lastConversation == m_currentConversation ? null : m_story.GetConversation(m_currentConversation);
+        }
+
+        private IEnumerator GotoStage()
+        {
+            yield return new WaitForSeconds(1f);
+
+            ProgramManager.Insatnce.Change_Scene(SceneName.GAME);
         }
     }
 }

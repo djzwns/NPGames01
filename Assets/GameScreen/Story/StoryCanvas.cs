@@ -1,10 +1,14 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
+using Redemption.UIAnimation;
 
 namespace Redemption.Story
 {
+    /// <summary>
+    /// * 스토리 캔버스 
+    ///     - 스토리 시작시 작동할 UI들을 관리.
+    /// </summary>
     public class StoryCanvas : BaseUICanvas
     {
         private enum STORYBTN { NEXT, SKIP }
@@ -28,21 +32,34 @@ namespace Redemption.Story
         [Header("Window")]
         [SerializeField]
         private GameObject m_ConversationBox;
+        [SerializeField]
+        private GameObject m_ConversationPanel;
         
         private Color m_downton = new Color(0.3f, 0.3f, 0.3f, 1);
+
+        #region AnimationUI
+        public UIAnimator FadeUI;
+        public UIAnimator ConversationBoxUI;
+        #endregion // AnimationUI
 
         public override void Init()
         {
             m_Btn[(int)STORYBTN.NEXT].onClick.AddListener(() => { Play(); });
-            m_Btn[(int)STORYBTN.SKIP].onClick.AddListener(() => { ConversationManager.Instance.Exit(); });
+            m_Btn[(int)STORYBTN.SKIP].onClick.AddListener(() => { Exit(); });
+
+            FadeUI.Init();
+            ConversationBoxUI.Init();
+
+            //m_ConversationPanel.SetActive(false);
+            //gameObject.SetActive(false);
         }
 
-        private void SetUIActive(bool _active)
-        {
-            m_ConversationBox.SetActive(_active);
-        }
+        //private void SetUIActive(bool _active)
+        //{
+        //    m_ConversationBox.SetActive(_active);
+        //}
 
-        private void ResetSprite()
+        private void ResetIllust()
         {
             for (int i = 0; i < m_illustrations.Length; ++i)
             {
@@ -78,6 +95,8 @@ namespace Redemption.Story
         {
             Conversation conversation = ConversationManager.Instance.GetCurrentConversation();
 
+            if (conversation == null) { Exit(); return; }
+
             SetIllust(conversation.sprite, (int)conversation.position, conversation.flip);
             m_speaker.text = conversation.speaker;
             m_text.text = conversation.text;
@@ -85,8 +104,10 @@ namespace Redemption.Story
 
         public override void Enter()
         {
-            ResetSprite();
+            ResetIllust();
             UpdateUI();
+            FadeUI.Enter();
+            ConversationBoxUI.Enter();
         }
 
         public override void Play()
@@ -97,15 +118,19 @@ namespace Redemption.Story
 
         public override void Exit()
         {
-            ResetSprite();
+            FadeUI.Exit();
+            ConversationBoxUI.Exit();
+            ConversationManager.Instance.Exit();
         }
-
-        //private IEnumerator FadeIn()
+        
+        //void OnEnable()
         //{
+        //    m_ConversationPanel.SetActive(true);
         //}
-
-        //private IEnumerator FadeOut()
+        //void OnDisable()
         //{
+        //    Play();
+        //    m_ConversationPanel.SetActive(false);
         //}
     }
 }

@@ -242,7 +242,7 @@ public class BaseHero : BaseObj_2D
             m_Mode = HEROMODE.IDLE;
         }
         m_Complete = m_HeroAnima.AnimationState.GetCurrent(0);
-        Debug.Log(m_Complete.AnimationLast);
+        //Debug.Log(m_Complete.AnimationLast);
 
 
         if (m_Complete.IsComplete)
@@ -268,7 +268,7 @@ public class BaseHero : BaseObj_2D
                     }
                     else
                     {
-                        Debug.Log(m_Complete.TrackIndex);
+                        //Debug.Log(m_Complete.TrackIndex);
                         Create_Bullet();
                     }
                 }
