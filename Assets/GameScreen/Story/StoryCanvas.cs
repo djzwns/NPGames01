@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using Redemption.UIAnimation;
@@ -29,12 +29,7 @@ namespace Redemption.Story
         [SerializeField]
         private Image m_fade;
 
-        [Header("Window")]
-        [SerializeField]
-        private GameObject m_ConversationBox;
-        [SerializeField]
-        private GameObject m_ConversationPanel;
-        
+        [Header("Window")]        
         private Color m_downton = new Color(0.3f, 0.3f, 0.3f, 1);
 
         #region AnimationUI
@@ -45,19 +40,11 @@ namespace Redemption.Story
         public override void Init()
         {
             m_Btn[(int)STORYBTN.NEXT].onClick.AddListener(() => { Play(); });
-            m_Btn[(int)STORYBTN.SKIP].onClick.AddListener(() => { Exit(); });
+            m_Btn[(int)STORYBTN.SKIP].onClick.AddListener(() => { StartCoroutine(GotoStage()); });
 
             FadeUI.Init();
             ConversationBoxUI.Init();
-
-            //m_ConversationPanel.SetActive(false);
-            //gameObject.SetActive(false);
         }
-
-        //private void SetUIActive(bool _active)
-        //{
-        //    m_ConversationBox.SetActive(_active);
-        //}
 
         private void ResetIllust()
         {
@@ -95,7 +82,7 @@ namespace Redemption.Story
         {
             Conversation conversation = ConversationManager.Instance.GetCurrentConversation();
 
-            if (conversation == null) { Exit(); return; }
+            if (conversation == null) { StartCoroutine(GotoStage()) ; return; }
 
             SetIllust(conversation.sprite, (int)conversation.position, conversation.flip);
             m_speaker.text = conversation.speaker;
@@ -118,19 +105,15 @@ namespace Redemption.Story
 
         public override void Exit()
         {
+        }
+
+        private IEnumerator GotoStage()
+        {
             FadeUI.Exit();
             ConversationBoxUI.Exit();
-            ConversationManager.Instance.Exit();
+            yield return new WaitForSeconds(1f);
+
+            ProgramManager.Insatnce.Change_Scene(SceneName.GAME);
         }
-        
-        //void OnEnable()
-        //{
-        //    m_ConversationPanel.SetActive(true);
-        //}
-        //void OnDisable()
-        //{
-        //    Play();
-        //    m_ConversationPanel.SetActive(false);
-        //}
     }
 }

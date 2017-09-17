@@ -82,7 +82,6 @@ namespace Redemption.Story
 
         public override void Exit()
         {
-            StartCoroutine(GotoStage());
         }
 
         public void NextConversation()
@@ -93,13 +92,6 @@ namespace Redemption.Story
         public Conversation GetCurrentConversation()
         {
             return m_lastConversation == m_currentConversation ? null : m_story.GetConversation(m_currentConversation);
-        }
-
-        private IEnumerator GotoStage()
-        {
-            yield return new WaitForSeconds(1f);
-
-            ProgramManager.Insatnce.Change_Scene(SceneName.GAME);
         }
     }
 }
