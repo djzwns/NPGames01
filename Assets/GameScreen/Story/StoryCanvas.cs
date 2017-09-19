@@ -29,6 +29,9 @@ namespace Redemption.Story
         [SerializeField]
         private Image m_fade;
 
+        [SerializeField]
+        private GameObject m_ConversationPanel;
+
         [Header("Window")]        
         private Color m_downton = new Color(0.3f, 0.3f, 0.3f, 1);
 
@@ -95,6 +98,7 @@ namespace Redemption.Story
             UpdateUI();
             FadeUI.Enter();
             ConversationBoxUI.Enter();
+            StartCoroutine(ConversationOn());
         }
 
         public override void Play()
@@ -114,6 +118,15 @@ namespace Redemption.Story
             yield return new WaitForSeconds(1f);
 
             ProgramManager.Insatnce.Change_Scene(SceneName.GAME);
+        }
+
+        private IEnumerator ConversationOn()
+        {
+            m_ConversationPanel.SetActive(false);
+
+            yield return new WaitForSeconds((float)ConversationManager.Instance.GetStoryDuration());
+
+            m_ConversationPanel.SetActive(true);
         }
     }
 }

@@ -63,7 +63,7 @@ public class ProgramManager : MonoBehaviour
         m_CurrentScene.gameObject.SetActive(false);
         m_CurrentScene.Exit();
         m_CurrentScene = m_SceneList[(int)_temp];
-        m_CurrentScene.Enter();
         m_CurrentScene.gameObject.SetActive(true);
+        m_CurrentScene.Enter();
     }
 }

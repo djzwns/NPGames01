@@ -124,7 +124,7 @@ public class ReadyWindow : BaseWindow
                 ProgramManager.Insatnce.Change_Scene(SceneName.GAME);
                 break;
             case "Story_Window":
-                ConversationManager.Instance.LoadStory("test");
+                ConversationManager.Instance.LoadStory("story1");
                 ProgramManager.Insatnce.Change_Scene(SceneName.STORY);
                 break;
             default:

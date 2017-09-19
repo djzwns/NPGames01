@@ -9,20 +9,20 @@ namespace Redemption.Story
     {
         public override void Init()
         {
-            m_Canvas.Init();
             for (int i = 0; i < m_ObjManager.Length; i++)
             {
                 m_ObjManager[i].Init();
             }
+            m_Canvas.Init();
         }
 
         public override void Enter()
         {
-            m_Canvas.Enter();
             for (int i = 0; i < m_ObjManager.Length; i++)
             {
                 m_ObjManager[i].Enter();
             }
+            m_Canvas.Enter();
         }
 
         public override void Play()

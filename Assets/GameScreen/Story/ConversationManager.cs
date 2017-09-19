@@ -27,17 +27,21 @@ namespace Redemption.Story
         }
         #endregion // * 싱글톤
 
-        #region 스토리 관련 속성
+        #region 스토리 관련 어트리뷰트
         [Header("Story")]
         [SerializeField]
         private ConversationScriptable m_story;
 
         [SerializeField]
+        private GameObject m_Canvas;
+        private GameObject m_storyObj;
         private PlayableDirector m_storyDirector;
 
         private int m_currentConversation;
         private int m_lastConversation;
-        #endregion // 스토리 관련 속성
+
+        private string m_storyPath;
+        #endregion // 스토리 관련 어트리뷰트
         
         /// <summary>
         /// 스토리 로드 함수. 시스템언어 설정에 맞는 데이터를 불러옴.
@@ -46,8 +50,7 @@ namespace Redemption.Story
         public void LoadStory(string _name)
         {
             string path = "Story/";
-            m_storyDirector.playableAsset = Resources.Load(path + _name) as PlayableAsset;
-
+            m_storyPath = path + _name;
             switch (Application.systemLanguage)
             {
                 case SystemLanguage.Korean:
@@ -61,7 +64,11 @@ namespace Redemption.Story
             m_story = Resources.Load(path) as ConversationScriptable;
             Init();
         }
-
+        public double GetStoryDuration()
+        {
+            return m_storyDirector.duration;
+        }
+        
         public override void Init()
         {
             if (m_story == null) return;
@@ -72,7 +79,9 @@ namespace Redemption.Story
 
         public override void Enter()
         {
-
+            m_storyObj = Instantiate(Resources.Load(m_storyPath), m_Canvas.transform) as GameObject;
+            m_storyDirector = m_storyObj.GetComponent<PlayableDirector>();
+            m_storyDirector.Play();
         }
 
         public override void Play()
@@ -82,6 +91,8 @@ namespace Redemption.Story
 
         public override void Exit()
         {
+            Destroy(m_storyObj);
+            m_storyDirector = null;
         }
 
         public void NextConversation()
